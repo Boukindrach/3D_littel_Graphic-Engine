@@ -18,6 +18,7 @@ SDL_Texture *color_buffer_texture;
 bool initialize_window(void);
 void draw_grid(void);
 void draw_rectangle(void);
+void draw_pixel(int x, int y, uint32_t color);
 void render_color_buffer(void);
 void clear_color_buffer(uint32_t color);
 void destroy_window(void);

@@ -101,6 +101,10 @@ void draw_rectangle(uint32_t color) {
 	}
 }
 
+void draw_pixel(int x, int y, uint32_t color) {
+	color_buffer[(WIDTH * y) + x] = color;
+}
+
 void clear_color_buffer(uint32_t color) {
 	for (int y = 0; y < HEIGHT; y++) {
 		for (int x = 0; x < WIDTH; x++) {
@@ -112,8 +116,9 @@ void clear_color_buffer(uint32_t color) {
 void render(void) {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-	draw_grid(0xFFFFFFFF);
-	draw_rectangle(0xFFFF0000);
+	//draw_grid(0xFFFFFFFF);
+	//draw_rectangle(0xFFFF0000);
+	draw_pixel(300, 400, 0x00AA0000);
 	render_color_buffer();
 	clear_color_buffer(0xFF000000);
 	SDL_RenderPresent(renderer);
