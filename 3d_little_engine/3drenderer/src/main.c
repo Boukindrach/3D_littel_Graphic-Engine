@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "display.h"
+#include "vector.h"
 
 bool is_running = false;
 
@@ -52,6 +53,7 @@ int main(void)
 	is_running = initialize_window();
 	
 	setup();
+	vector3d_t new_vector = {3.0, 5.0, 1.0};
 
 	while (is_running) {
 		process_input();
