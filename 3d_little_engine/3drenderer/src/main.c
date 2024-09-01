@@ -4,10 +4,11 @@
 #include <stdint.h>
 #include "display.h"
 #include "vector.h"
-
-const int POINT_NUMBERS = 6 * 6 * 6;
+#define POINT_NUMBERS (9 * 9 * 9)
 vector3d_t cube_points[POINT_NUMBERS];
 vector2d_t projected_points[POINT_NUMBERS];
+float scale_ = 156;
+
 bool is_running = false;
 
 void setup(void) {
@@ -20,9 +21,9 @@ void setup(void) {
 			HEIGHT);
 
 	int count_point = 0;
-	for (float x = -1; x <= 1; x += 0.15) {
-		for (float y = -1; y <= 1; y += 0.15) {
-			for (float z = -1; z <= 1; z += 0.15) {
+	for (float x = -1; x <= 1; x += 0.25) {
+		for (float y = -1; y <= 1; y += 0.25) {
+			for (float z = -1; z <= 1; z += 0.25) {
 				vector3d_t new_point = {.x = x, .y = y, .z = z};
 				cube_points[count_point++] = new_point;
 			}
@@ -47,8 +48,8 @@ void process_input(void) {
 
 vector2d_t project(vector3d_t point) {
 	vector2d_t projected_point = {
-		.x = point.x,
-		.y = point.y,
+		.x = (scale_ * point.x),
+		.y = (scale_ * point.y)
 	};
 	return projected_point;
 
@@ -66,7 +67,15 @@ void update(void) {
 void render(void) {
 	//draw_grid(0xFFFFFFFF);
 	//draw_rectangle(0xFFFF0000);
-	draw_pixel(300, 400, 0x00AA0000);
+	//draw_pixel(300, 400, 0x00AA0000);
+	for (int i = 0; i <= POINT_NUMBERS; i++) {
+		vector2d_t projected_point = projected_points[i];
+		draw_rectangle(projected_point.x + (WIDTH / 2),
+			       	projected_point.y + (HEIGHT / 2),
+				4,
+				4,
+				0xffff0000);
+	}
 	render_color_buffer();
 	clear_color_buffer(0xFF000000);
 	SDL_RenderPresent(renderer);
