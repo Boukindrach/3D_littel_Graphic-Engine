@@ -7,7 +7,8 @@
 #define POINT_NUMBERS (9 * 9 * 9)
 vector3d_t cube_points[POINT_NUMBERS];
 vector2d_t projected_points[POINT_NUMBERS];
-float scale_ = 156;
+float scale_ = 500;
+vector3d_t camera_position =  {.x = 0 , .y = 0, .z = -5};
 
 bool is_running = false;
 
@@ -48,8 +49,8 @@ void process_input(void) {
 
 vector2d_t project(vector3d_t point) {
 	vector2d_t projected_point = {
-		.x = (scale_ * point.x),
-		.y = (scale_ * point.y)
+		.x = (scale_ * point.x) / point.z,
+		.y = (scale_ * point.y) / point.z
 	};
 	return projected_point;
 
@@ -58,6 +59,7 @@ vector2d_t project(vector3d_t point) {
 void update(void) {
 	for (int i = 0; i < POINT_NUMBERS; i++) {
 		vector3d_t point = cube_points[i];
+		point.z -= camera_position.z;
 		vector2d_t projected_point = project(point);
 		projected_points[i] = projected_point;
 	}
