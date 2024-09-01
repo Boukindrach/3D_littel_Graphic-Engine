@@ -5,6 +5,9 @@
 #include "display.h"
 #include "vector.h"
 
+const int POINT_NUMBERS = 6 * 6 * 6;
+vector3d_t cube_points[POINT_NUMBERS];
+vector2d_t projected_points[POINT_NUMBERS];
 bool is_running = false;
 
 void setup(void) {
@@ -15,6 +18,16 @@ void setup(void) {
 			SDL_TEXTUREACCESS_STREAMING,
 			WIDTH,
 			HEIGHT);
+
+	int count_point = 0;
+	for (float x = -1; x <= 1; x += 0.15) {
+		for (float y = -1; y <= 1; y += 0.15) {
+			for (float z = -1; z <= 1; z += 0.15) {
+				vector3d_t new_point = {.x = x, .y = y, .z = z};
+				cube_points[count_point++] = new_point;
+			}
+		}
+	}
 }
 
 void process_input(void) {
@@ -32,13 +45,25 @@ void process_input(void) {
 	}
 }
 
+vector2d_t project(vector3d_t point) {
+	vector2d_t projected_point = {
+		.x = point.x,
+		.y = point.y,
+	};
+	return projected_point;
+
+}
+
 void update(void) {
+	for (int i = 0; i < POINT_NUMBERS; i++) {
+		vector3d_t point = cube_points[i];
+		vector2d_t projected_point = project(point);
+		projected_points[i] = projected_point;
+	}
 
 }
 
 void render(void) {
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
 	//draw_grid(0xFFFFFFFF);
 	//draw_rectangle(0xFFFF0000);
 	draw_pixel(300, 400, 0x00AA0000);
@@ -53,7 +78,6 @@ int main(void)
 	is_running = initialize_window();
 	
 	setup();
-	vector3d_t new_vector = {3.0, 5.0, 1.0};
 
 	while (is_running) {
 		process_input();
