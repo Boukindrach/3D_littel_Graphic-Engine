@@ -57,10 +57,15 @@ vector2d_t project(vector3d_t point) {
 }
 
 void update(void) {
-	cube_rotation.y += 0.1;
+	cube_rotation.x += 0.01;
+	cube_rotation.y += 0.01;
+	cube_rotation.z += 0.01;
+
 	for (int i = 0; i < POINT_NUMBERS; i++) {
 		vector3d_t point = cube_points[i];
-		vector3d_t transformed_point = vector3d_rotate_y(point, cube_rotation.y);
+		vector3d_t transformed_point = vector3d_rotate_x(point, cube_rotation.x);
+		transformed_point = vector3d_rotate_y(transformed_point, cube_rotation.y);
+		transformed_point = vector3d_rotate_z(transformed_point, cube_rotation.z);
 		transformed_point.z -= camera_position.z;
 		vector2d_t projected_point = project(transformed_point);
 		projected_points[i] = projected_point;
