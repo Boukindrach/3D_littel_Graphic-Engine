@@ -1,6 +1,15 @@
 #include "vector.h"
 #include <math.h>
 
+
+float vector2d_length(vector3d_t v) {
+	return sqrt(v.x * v.x + v.y * v.y);
+}
+
+float vector3d_length(vector3d_t v) {
+	return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
 vector3d_t vector3d_rotate_x(vector3d_t v, float angle) {
 	vector3d_t rotated_vector = {
 		.x = v.x,

@@ -54,9 +54,9 @@ vector2d_t project(vector3d_t point) {
 
 void update(void) {
 	triangles_to_render = NULL;
-	mesh.rotation.x += 0.001;
-	mesh.rotation.y += 0.001;
-	mesh.rotation.z += 0.001;
+	mesh.rotation.x += 0.00;
+	mesh.rotation.y += 0.00;
+	mesh.rotation.z += 0.00;
 	
 	int number_faces = array_length(mesh.faces);
 	for (int i = 0; i < number_faces; i++) {
