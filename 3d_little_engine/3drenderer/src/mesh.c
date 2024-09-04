@@ -1,6 +1,6 @@
 #include "mesh.h"
 
-vector3d_t mesh_vertices[M_MESH_VERTICES] = {
+vector3d_t cube_vertices[M_CUBE_VERTICES] = {
         {.x = -1, .y = -1, .z = -1},
         {.x = -1, .y = 1, .z = -1},
         {.x = 1, .y = 1, .z = -1},
@@ -12,7 +12,7 @@ vector3d_t mesh_vertices[M_MESH_VERTICES] = {
 
 };
 
-face_t mesh_faces[M_MESH_FACES] = {
+face_t cube_faces[M_CUBE_FACES] = {
 
         {.a = 1, .b = 2, .c = 3},
         {.a = 1, .b = 3, .c = 4},

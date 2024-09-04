@@ -12,7 +12,6 @@
 triangle_t *triangles_to_render = NULL;
 float scale_ = 500;
 vector3d_t camera_position =  {.x = 0 , .y = 0, .z = -5};
-vector3d_t cube_rotation = {.x = 0 , .y = 0, .z =  0};
 bool is_running = false;
 int previous_frame_time = 0;
 
@@ -74,7 +73,6 @@ void update(void) {
                         projected_point.y += (HEIGHT / 2);
 			projected_triangle.points[j] = projected_point;
 		};
-		//triangles_to_render[i] = projected_triangle;
 		array_push(triangles_to_render, projected_triangle);
 	};
 
