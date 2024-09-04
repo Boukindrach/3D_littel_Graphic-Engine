@@ -1,4 +1,13 @@
 #include "mesh.h"
+#include "array.h"
+#include <stdio.h>
+
+mesh_t mesh = {
+	.vertices = NULL,
+	.faces = NULL,
+	.rotation = {0, 0, 0}
+
+};
 
 vector3d_t cube_vertices[M_CUBE_VERTICES] = {
         {.x = -1, .y = -1, .z = -1},
@@ -32,3 +41,14 @@ face_t cube_faces[M_CUBE_FACES] = {
         {.a = 6, .b = 8, .c = 1},
         {.a = 6, .b = 1, .c = 4}
 };
+
+void load_cube_mesh_data(void) {
+	for (int i = 0; i < M_CUBE_VERTICES; i++) {
+		vector3d_t cube_vertex = cube_vertices[i];
+		array_push(mesh.vertices, cube_vertex);
+	}
+	for (int i = 0; i < M_CUBE_FACES; i++) {
+                face_t cube_face = cube_faces[i];
+                array_push(mesh.faces, cube_face);
+        }
+}

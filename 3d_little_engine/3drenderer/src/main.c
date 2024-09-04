@@ -23,6 +23,8 @@ void setup(void) {
 			SDL_TEXTUREACCESS_STREAMING,
 			WIDTH,
 			HEIGHT);
+
+	load_cube_mesh_data();
 }
 
 void process_input(void) {
@@ -51,22 +53,23 @@ vector2d_t project(vector3d_t point) {
 
 void update(void) {
 	triangles_to_render = NULL;
-	cube_rotation.x += 0.01;
-	cube_rotation.y += 0.01;
-	cube_rotation.z += 0.01;
+	mesh.rotation.x += 0.01;
+	mesh.rotation.y += 0.01;
+	mesh.rotation.z += 0.01;
 	
-	for (int i = 0; i < M_MESH_FACES; i++) {
-		face_t mesh_face = mesh_faces[i];
+	int number_faces = array_length(mesh.faces);
+	for (int i = 0; i < number_faces; i++) {
+		face_t mesh_face = mesh.faces[i];
 		vector3d_t face_vertices[3];
-		face_vertices[0] = mesh_vertices[mesh_face.a - 1];
-		face_vertices[1] = mesh_vertices[mesh_face.b - 1];
-		face_vertices[2] = mesh_vertices[mesh_face.c - 1];
+		face_vertices[0] = mesh.vertices[mesh_face.a - 1];
+		face_vertices[1] = mesh.vertices[mesh_face.b - 1];
+		face_vertices[2] = mesh.vertices[mesh_face.c - 1];
 		triangle_t projected_triangle;
 		for (int j = 0; j < 3; j++) {
 			vector3d_t transformed_vertex = face_vertices[j];
-			transformed_vertex = vector3d_rotate_x(transformed_vertex, cube_rotation.x);
-                	transformed_vertex = vector3d_rotate_y(transformed_vertex, cube_rotation.y);
-                	transformed_vertex = vector3d_rotate_z(transformed_vertex, cube_rotation.z);
+			transformed_vertex = vector3d_rotate_x(transformed_vertex, mesh.rotation.x);
+                	transformed_vertex = vector3d_rotate_y(transformed_vertex, mesh.rotation.y);
+                	transformed_vertex = vector3d_rotate_z(transformed_vertex, mesh.rotation.z);
 			transformed_vertex.z -= camera_position.z;
 			vector2d_t projected_point = project(transformed_vertex);
 			projected_point.x += (WIDTH / 2);
