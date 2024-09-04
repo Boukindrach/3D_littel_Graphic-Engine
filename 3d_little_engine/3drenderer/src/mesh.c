@@ -1,6 +1,7 @@
 #include "mesh.h"
 #include "array.h"
 #include <stdio.h>
+#include <string.h>
 
 mesh_t mesh = {
 	.vertices = NULL,
@@ -57,8 +58,8 @@ void load_cube_mesh_data(void) {
 void load_obj_file_data(char* filename) {
         FILE *file;
         file = fopen(filename, "r");
-        char line[512];
-        while (fgets(line, 512, file)) {
+        char line[2000];
+        while (fgets(line, 2000, file)) {
                 if (strncmp (line, "v ", 2) == 0) {
                         vector3d_t vertex;
                         sscanf(line, "v %f %f %f", &vertex.x, &vertex.y, &vertex.z);
@@ -68,10 +69,13 @@ void load_obj_file_data(char* filename) {
                         int vertex_indices[3];
                         int texture_indices[3];
                         int normal_indices[3];
-                        sscanf(line, "f %d%d%d %d%d%d %d%d%d",
+                        if (sscanf(line, "f %d/%d/%d %d/%d/%d %d/%d/%d",
                                         &vertex_indices[0], &texture_indices[0], &normal_indices[0],
                                         &vertex_indices[1], &texture_indices[1], &normal_indices[1],
-                                        &vertex_indices[2], &texture_indices[2], &normal_indices[2]);
+                                        &vertex_indices[2], &texture_indices[2], &normal_indices[2]) != 9) {
+				printf("%s\n", line);
+				continue;
+			}
                         face_t face = {
                                 .a = vertex_indices[0],
                                 .b = vertex_indices[1],
@@ -80,4 +84,5 @@ void load_obj_file_data(char* filename) {
                         array_push(mesh.faces, face);
                 }
         }
+	fclose(file);
 }

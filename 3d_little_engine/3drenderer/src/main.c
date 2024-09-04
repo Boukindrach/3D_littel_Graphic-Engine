@@ -25,7 +25,7 @@ void setup(void) {
 			HEIGHT);
 
 	//load_cube_mesh_data();
-	load_obj_file_data(".assets/filename");
+	load_obj_file_data("./assets/car.obj");
 }
 
 void process_input(void) {
@@ -54,9 +54,9 @@ vector2d_t project(vector3d_t point) {
 
 void update(void) {
 	triangles_to_render = NULL;
-	mesh.rotation.x += 0.01;
-	mesh.rotation.y += 0.01;
-	mesh.rotation.z += 0.01;
+	mesh.rotation.x += 0.001;
+	mesh.rotation.y += 0.001;
+	mesh.rotation.z += 0.001;
 	
 	int number_faces = array_length(mesh.faces);
 	for (int i = 0; i < number_faces; i++) {
