@@ -5,10 +5,11 @@
 #include "display.h"
 #include "vector.h"
 #include "mesh.h"
+#include "array.h"
 #define FBS 30
 #define FRAME_TARGET_TIME (1000 / FBS)
 
-triangle_t triangles_to_render[M_MESH_FACES];
+triangle_t *triangles_to_render = NULL;
 float scale_ = 500;
 vector3d_t camera_position =  {.x = 0 , .y = 0, .z = -5};
 vector3d_t cube_rotation = {.x = 0 , .y = 0, .z =  0};
@@ -50,6 +51,7 @@ vector2d_t project(vector3d_t point) {
 }
 
 void update(void) {
+	triangles_to_render = NULL;
 	cube_rotation.x += 0.01;
 	cube_rotation.y += 0.01;
 	cube_rotation.z += 0.01;
@@ -72,13 +74,15 @@ void update(void) {
                         projected_point.y += (HEIGHT / 2);
 			projected_triangle.points[j] = projected_point;
 		};
-		triangles_to_render[i] = projected_triangle;
+		//triangles_to_render[i] = projected_triangle;
+		array_push(triangles_to_render, projected_triangle);
 	};
 
 }
 
 void render(void) {
-	for (int i = 0; i < M_MESH_FACES; i++) {
+	int number_triangles = array_length(triangles_to_render);
+	for (int i = 0; i < number_triangles; i++) {
 		triangle_t triangle = triangles_to_render[i];
 		draw_rectangle(triangle.points[0].x, triangle.points[0].y, 3, 3, 0xffffff00);
 		draw_rectangle(triangle.points[1].x, triangle.points[1].y, 3, 3, 0xffffff00);
@@ -95,7 +99,7 @@ void render(void) {
 				);
 
 	}
-	//draw_line(100, 200, 300, 50, 0xFF00FF00);
+	array_free(triangles_to_render);
 
 	render_color_buffer();
 	clear_color_buffer(0xFF000000);
