@@ -107,6 +107,11 @@ void render(void) {
 	SDL_RenderPresent(renderer);
 }
 
+void free_resources(void) {
+	free(color_buffer);
+	array_free(mesh.faces);
+	array_free(mesh.vertices);
+}
 
 int main(void)
 {
@@ -119,8 +124,7 @@ int main(void)
 		update();
 		render();
 	}
-
-	free(color_buffer);
+	free_resources();
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
