@@ -43,6 +43,12 @@ vector2d_t vector2d_div(vector2d_t v, float factor) {
 float vector2d_dot(vector2d_t a, vector2d_t b) {
         return (a.x * b.x) + (a.y * b.y);
 }
+
+void vector2d_normalize(vector2d_t *v) {
+	float length = sqrt(v->x * v->x + v->y * v->y);
+	v->x /= length;
+	v->y /= length;
+}
 /////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////
@@ -98,6 +104,13 @@ vector3d_t vector3d_cross(vector3d_t a, vector3d_t b) {
 
 float vector3d_dot(vector3d_t a, vector3d_t b) {
 	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+}
+
+void vector3d_normalize(vector3d_t *v) {
+        float length = sqrt(v->x * v->x + v->y * v->y + v->x + v->z * v->z);
+        v->x /= length;
+        v->y /= length;
+	v->z /= length;
 }
 
 ////////////////////////////////////////////////////////////
