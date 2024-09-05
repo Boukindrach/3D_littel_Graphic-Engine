@@ -22,7 +22,7 @@ enum render_method {
 } render_method;
 
 triangle_t *triangles_to_render = NULL;
-float scale_ = 500;
+float scale_ = 250;
 bool is_running = false;
 int previous_frame_time = 0;
 
@@ -40,6 +40,7 @@ void setup(void) {
 
 	//load_cube_mesh_data();
 	load_obj_file_data("./assets/untitled.obj");
+	//load_obj_file_data("./assets/car.obj");
 }
 
 void process_input(void) {
@@ -70,7 +71,7 @@ void process_input(void) {
 vector2d_t project(vector3d_t point) {
 	vector2d_t projected_point = {
 		.x = (scale_ * point.x) / point.z,
-		.y = (scale_ * point.y) / point.z
+		.y = -(scale_ * point.y) / point.z
 	};
 	return projected_point;
 
@@ -78,7 +79,7 @@ vector2d_t project(vector3d_t point) {
 
 void update(void) {
 	triangles_to_render = NULL;
-	mesh.rotation.x += 0.01;
+	mesh.rotation.x += 0.00;
 	mesh.rotation.y += 0.01;
 	mesh.rotation.z += 0.00;
 	
@@ -99,7 +100,7 @@ void update(void) {
 			transformed_vertex = vector3d_rotate_x(transformed_vertex, mesh.rotation.x);
                 	transformed_vertex = vector3d_rotate_y(transformed_vertex, mesh.rotation.y);
                 	transformed_vertex = vector3d_rotate_z(transformed_vertex, mesh.rotation.z);
-			transformed_vertex.z += 10;
+			transformed_vertex.z += 5;
 			transformed_vertices[j] = transformed_vertex;
 		}
 		//
@@ -131,7 +132,7 @@ void update(void) {
 		for (int j = 0; j < 3; j++) {
 			vector2d_t projected_point = project(transformed_vertices[j]);
 			projected_point.x += (WIDTH / 2);
-                        projected_point.y += (HEIGHT / 2);
+                        projected_point.y += (HEIGHT / 1.5);
 			projected_triangle.points[j] = projected_point;
 		};
 		array_push(triangles_to_render, projected_triangle);
