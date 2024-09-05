@@ -39,7 +39,7 @@ void setup(void) {
 			HEIGHT);
 
 	//load_cube_mesh_data();
-	load_obj_file_data("./assets/untitled.obj");
+	load_obj_file_data("./assets/Building.obj");
 	//load_obj_file_data("./assets/car.obj");
 }
 
