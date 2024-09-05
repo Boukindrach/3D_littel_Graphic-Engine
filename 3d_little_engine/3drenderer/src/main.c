@@ -11,7 +11,7 @@
 
 triangle_t *triangles_to_render = NULL;
 float scale_ = 500;
-vector3d_t camera_position =  {.x = 0 , .y = 0, .z = -5};
+vector3d_t camera_position =  {0 , 0, 0};
 bool is_running = false;
 int previous_frame_time = 0;
 
@@ -55,10 +55,11 @@ vector2d_t project(vector3d_t point) {
 void update(void) {
 	triangles_to_render = NULL;
 	mesh.rotation.x += 0.01;
-	mesh.rotation.y += 0.00;
-	mesh.rotation.z += 0.00;
+	mesh.rotation.y += 0.01;
+	mesh.rotation.z += 0.01;
 	
 	int number_faces = array_length(mesh.faces);
+	//
 	for (int i = 0; i < number_faces; i++) {
 		face_t mesh_face = mesh.faces[i];
 		vector3d_t face_vertices[3];
@@ -66,13 +67,37 @@ void update(void) {
 		face_vertices[1] = mesh.vertices[mesh_face.b - 1];
 		face_vertices[2] = mesh.vertices[mesh_face.c - 1];
 		triangle_t projected_triangle;
+
+		vector3d_t transformed_vertices[3];
+		//
 		for (int j = 0; j < 3; j++) {
 			vector3d_t transformed_vertex = face_vertices[j];
 			transformed_vertex = vector3d_rotate_x(transformed_vertex, mesh.rotation.x);
                 	transformed_vertex = vector3d_rotate_y(transformed_vertex, mesh.rotation.y);
                 	transformed_vertex = vector3d_rotate_z(transformed_vertex, mesh.rotation.z);
-			transformed_vertex.z -= camera_position.z;
-			vector2d_t projected_point = project(transformed_vertex);
+			transformed_vertex.z += 5;
+			transformed_vertices[j] = transformed_vertex;
+		}
+		//
+		vector3d_t vector_a = transformed_vertices[0];
+		vector3d_t vector_b = transformed_vertices[1];
+		vector3d_t vector_c = transformed_vertices[2];
+
+		vector3d_t vector_ab = vector3d_sub(vector_b, vector_a);
+		vector3d_t vector_ac = vector3d_sub(vector_c, vector_a);
+
+		vector3d_t normal = vector3d_cross(vector_ab, vector_ac);
+
+		vector3d_t camera_ray = vector3d_sub(camera_position, vector_a);
+
+		float aline_camera = vector3d_dot(normal, camera_ray);
+
+		if (aline_camera < 0) {
+			continue;
+		}
+		//
+		for (int j = 0; j < 3; j++) {
+			vector2d_t projected_point = project(transformed_vertices[j]);
 			projected_point.x += (WIDTH / 2);
                         projected_point.y += (HEIGHT / 2);
 			projected_triangle.points[j] = projected_point;
