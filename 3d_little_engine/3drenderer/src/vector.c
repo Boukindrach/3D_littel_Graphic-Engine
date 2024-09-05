@@ -82,6 +82,16 @@ vector3d_t vector3d_div(vector3d_t v, float factor) {
         return result;
 }
 
+vector3d_t vector3d_cross(vector3d_t a, vector3d_t b) {
+	vector3d_t result = {
+		.x = a.y * b.z - a.z * b.y,
+		.y = a.z * b.x - a.x * b.z,
+		.z = a.x * b.y - a.y * b.x
+	};
+	return result;
+
+}
+
 ////////////////////////////////////////////////////////////
 //
 ///////////////////////////////////////////////////////////

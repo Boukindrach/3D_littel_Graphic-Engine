@@ -23,6 +23,7 @@ vector3d_t vector3d_add(vector3d_t a, vector3d_t b);
 vector3d_t vector3d_sub(vector3d_t a, vector3d_t b);
 vector3d_t vector3d_mul(vector3d_t v, float factor);
 vector3d_t vector3d_div(vector3d_t v, float factor);
+vector3d_t vector3d_cross(vector3d_t a, vector3d_t b);
 
 vector3d_t vector3d_rotate_x(vector3d_t v, float angle);
 vector3d_t vector3d_rotate_y(vector3d_t v, float angle);
