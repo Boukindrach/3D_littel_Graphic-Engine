@@ -119,14 +119,14 @@ void render(void) {
 			triangle.points[0].x, triangle.points[0].y,
                 	triangle.points[1].x, triangle.points[1].y,
                 	triangle.points[2].x, triangle.points[2].y,
-			0xff00ff00
+			0xffffffff
 				);
 
 		draw_triangle(
 			triangle.points[0].x, triangle.points[0].y,
 			triangle.points[1].x, triangle.points[1].y,
 			triangle.points[2].x, triangle.points[2].y,
-			0xff00ffff
+			0xff000000
 			);
 	}
 
