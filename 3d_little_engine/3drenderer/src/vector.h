@@ -17,6 +17,7 @@ vector2d_t vector2d_add(vector2d_t a, vector2d_t b);
 vector2d_t vector2d_sub(vector2d_t a, vector2d_t b);
 vector2d_t vector2d_mul(vector2d_t v, float factor);
 vector2d_t vector2d_div(vector2d_t v, float factor);
+float vector2d_dot(vector2d_t a, vector2d_t b);
 
 float vector3d_length(vector3d_t v);
 vector3d_t vector3d_add(vector3d_t a, vector3d_t b);
@@ -24,6 +25,7 @@ vector3d_t vector3d_sub(vector3d_t a, vector3d_t b);
 vector3d_t vector3d_mul(vector3d_t v, float factor);
 vector3d_t vector3d_div(vector3d_t v, float factor);
 vector3d_t vector3d_cross(vector3d_t a, vector3d_t b);
+float vector3d_dot(vector3d_t a, vector3d_t b);
 
 vector3d_t vector3d_rotate_x(vector3d_t v, float angle);
 vector3d_t vector3d_rotate_y(vector3d_t v, float angle);

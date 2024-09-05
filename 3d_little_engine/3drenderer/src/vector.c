@@ -39,6 +39,10 @@ vector2d_t vector2d_div(vector2d_t v, float factor) {
         };
         return result;
 }
+
+float vector2d_dot(vector2d_t a, vector2d_t b) {
+        return (a.x * b.x) + (a.y * b.y);
+}
 /////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////
@@ -90,6 +94,10 @@ vector3d_t vector3d_cross(vector3d_t a, vector3d_t b) {
 	};
 	return result;
 
+}
+
+float vector3d_dot(vector3d_t a, vector3d_t b) {
+	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 
 ////////////////////////////////////////////////////////////
