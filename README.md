@@ -26,7 +26,7 @@ Make (optional, for building)
 Building the Project
 
 Clone the repository:
-Copygit clone https://github.com/3D_littel_Graphic-Engine.git
+Copy: git clone https://github.com/Boukindrach/3D_littel_Graphic-Engine.git
 
 cd 3d-renderer
 
