@@ -87,7 +87,9 @@ void update(void) {
 		vector3d_t vector_ac = vector3d_sub(vector_c, vector_a);
 
 		vector3d_t normal = vector3d_cross(vector_ab, vector_ac);
-
+		
+		vector3d_normalize(&vector_ab);
+		vector3d_normalize(&vector_ac);
 		vector3d_normalize(&normal);
 
 		vector3d_t camera_ray = vector3d_sub(camera_position, vector_a);
