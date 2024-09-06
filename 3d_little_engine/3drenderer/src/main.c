@@ -7,9 +7,13 @@
 #include "mesh.h"
 #include "array.h"
 #include "camera.h"
+#include "matrix.h"
+
+// Constants
 #define FBS 30
 #define FRAME_TARGET_TIME (1000 / FBS)
 
+// Enumerations for rendering options
 enum  cull_method {
         CULL_NONE,
         CULL_BACKFACE
@@ -21,15 +25,19 @@ enum render_method {
         RENDER_FILL_TRIANGLE_WIRE
 } render_method;
 
+// Global variables
 triangle_t *triangles_to_render = NULL;
-float scale_ = 250;
+float scale_ = 200;
 bool is_running = false;
 int previous_frame_time = 0;
 
+
+// Initialize the renderer
 void setup(void) {
 	render_method = RENDER_FILL_TRIANGLE;
         cull_method = CULL_BACKFACE;
-
+	
+	// Allocate the color buffer and create the SDL texture
 	color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * WIDTH * HEIGHT);
 	color_buffer_texture = SDL_CreateTexture(
 			renderer,
@@ -37,12 +45,13 @@ void setup(void) {
 			SDL_TEXTUREACCESS_STREAMING,
 			WIDTH,
 			HEIGHT);
-
+	
+	// load the 3d model
 	//load_cube_mesh_data();
 	load_obj_file_data("./assets/Building.obj");
-	//load_obj_file_data("./assets/car.obj");
 }
 
+// Handle user input
 void process_input(void) {
 	SDL_Event event;
 	SDL_PollEvent(&event);
@@ -68,6 +77,7 @@ void process_input(void) {
 	};
 }
 
+// Project a 3D point to 2D space
 vector2d_t project(vector3d_t point) {
 	vector2d_t projected_point = {
 		.x = (scale_ * point.x) / point.z,
@@ -77,14 +87,20 @@ vector2d_t project(vector3d_t point) {
 
 }
 
+// Update the scene
 void update(void) {
 	triangles_to_render = NULL;
+
+	// Update mesh rotation
 	mesh.rotation.x += 0.00;
 	mesh.rotation.y += 0.01;
 	mesh.rotation.z += 0.00;
+	mesh.scale.x += 0.002;
+
+	matrix4_t scale_matrix = matrix4_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
 	
+	// Loop through all mesh faces
 	int number_faces = array_length(mesh.faces);
-	//
 	for (int i = 0; i < number_faces; i++) {
 		face_t mesh_face = mesh.faces[i];
 		vector3d_t face_vertices[3];
@@ -94,20 +110,19 @@ void update(void) {
 		triangle_t projected_triangle;
 
 		vector3d_t transformed_vertices[3];
-		//
+		// Transform vertices
 		for (int j = 0; j < 3; j++) {
-			vector3d_t transformed_vertex = face_vertices[j];
-			transformed_vertex = vector3d_rotate_x(transformed_vertex, mesh.rotation.x);
-                	transformed_vertex = vector3d_rotate_y(transformed_vertex, mesh.rotation.y);
-                	transformed_vertex = vector3d_rotate_z(transformed_vertex, mesh.rotation.z);
+			vector4d_t transformed_vertex = vector4d_form_vec3(face_vertices[j]);
+			transformed_vertex.z = matrix4_mul_vec4(scale_matrix, transformed_vertex);
+				
 			transformed_vertex.z += 5;
 			transformed_vertices[j] = transformed_vertex;
 		}
 		//
 		if (cull_method == CULL_BACKFACE) {
-			vector3d_t vector_a = transformed_vertices[0];
-			vector3d_t vector_b = transformed_vertices[1];
-			vector3d_t vector_c = transformed_vertices[2];
+			vector3d_t vector_a = vector3d_form_vec4(transformed_vertices[0]);
+			vector3d_t vector_b = vector3d_form_vec4(transformed_vertices[1]);
+			vector3d_t vector_c = vector3d_form_vec4(transformed_vertices[2]);
 
 			vector3d_t vector_ab = vector3d_sub(vector_b, vector_a);
 			vector3d_t vector_ac = vector3d_sub(vector_c, vector_a);
@@ -132,7 +147,7 @@ void update(void) {
 		for (int j = 0; j < 3; j++) {
 			vector2d_t projected_point = project(transformed_vertices[j]);
 			projected_point.x += (WIDTH / 2);
-                        projected_point.y += (HEIGHT / 1.5);
+                        projected_point.y += (HEIGHT / 1.75);
 			projected_triangle.points[j] = projected_point;
 		};
 		array_push(triangles_to_render, projected_triangle);
@@ -163,13 +178,14 @@ void render(void) {
 		}
 	}
 
+	// Clean up and present the rendered frame
 	array_free(triangles_to_render);
-
 	render_color_buffer();
 	clear_color_buffer(0xFF000000);
 	SDL_RenderPresent(renderer);
 }
 
+// Free allocated resources
 void free_resources(void) {
 	free(color_buffer);
 	array_free(mesh.faces);

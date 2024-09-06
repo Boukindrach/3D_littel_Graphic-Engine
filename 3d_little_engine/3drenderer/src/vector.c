@@ -144,3 +144,13 @@ vector3d_t vector3d_rotate_z(vector3d_t v, float angle) {
         return rotated_vector;
 
 }
+
+
+vector4d_t vector4d_form_vec3(vector3d_t v) {
+	vector4d_t result = (v.x, v.y, v.z, 1.0);
+	return result;
+}
+vector3d_t vector3d_form_vec4(vector4d_t v) {
+	vector3d_t result = (v.x, v.y, v.z);
+        return result;
+}

@@ -4,12 +4,13 @@
 #include <stdint.h>
 #include "display.h"
 
+// Global variables for SDL and rendering
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 uint32_t *color_buffer = NULL;
 SDL_Texture *color_buffer_texture = NULL;
 
-
+// Initialize SDL window and renderer
 bool initialize_window(void) {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		fprintf(stderr, "Error initializing SDL");
@@ -39,6 +40,7 @@ bool initialize_window(void) {
 	return true;
 }
 
+// Draw a grid on the screen
 void draw_grid(uint32_t color) {
         for (int y = 0; y < HEIGHT; y++) {
                 for (int x = 0; x < WIDTH; x++) {
@@ -49,7 +51,7 @@ void draw_grid(uint32_t color) {
         }
 }
 
-
+// Draw a filled rectangle
 void draw_rectangle(int x, int y, int height, int width, uint32_t color) {
         for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
@@ -60,6 +62,7 @@ void draw_rectangle(int x, int y, int height, int width, uint32_t color) {
         }
 }
 
+// Draw a triangle outline
 void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2,uint32_t color) {
 	draw_line(x0, y0, x1, y1, color);
 	draw_line(x1, y1, x2, y2, color);
@@ -67,12 +70,14 @@ void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2,uint32_t color
 
 }
 
+// Draw a single pixel
 void draw_pixel(int x, int y, uint32_t color) {
 	if  (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
         	color_buffer[(WIDTH * y) + x] = color;
 	}
 }
 
+// Draw a line using Bresenham's line algorithm
 void draw_line(int x0, int y0, int x1, int y1, uint32_t color) {
 	int delta_x = (x1 - x0);
 	int delta_y = (y1 - y0);
@@ -93,6 +98,7 @@ void draw_line(int x0, int y0, int x1, int y1, uint32_t color) {
 
 }
 
+// Update the SDL texture with the color buffer and render it
 void render_color_buffer(void) {
         SDL_UpdateTexture(
                 color_buffer_texture,
@@ -103,6 +109,7 @@ void render_color_buffer(void) {
         SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
+// Clear the color buffer with specific color
 void clear_color_buffer(uint32_t color) {
         for (int y = 0; y < HEIGHT; y++) {
                 for (int x = 0; x < WIDTH; x++) {
