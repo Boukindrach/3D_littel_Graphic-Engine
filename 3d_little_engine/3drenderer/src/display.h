@@ -5,14 +5,20 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 #include <stdint.h>
+
+// Screen dimensions
 #define WIDTH 800
 #define HEIGHT 600
 
+// External declarations for global variables
 extern SDL_Window *window;
 extern SDL_Renderer *renderer;
 extern uint32_t *color_buffer;
 extern SDL_Texture *color_buffer_texture;
 
+/////////////////////////////////////////////////////
+// Function prototypes
+/////////////////////////////////////////////////////
 
 bool initialize_window(void);
 void draw_grid(uint32_t color);
