@@ -97,7 +97,7 @@ void update(void) {
 	mesh.rotation.z += 0.00;
 	mesh.scale.x += 0.002;
 
-	matrix4_t scale_matrix = matrix4_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
+	matrix4_t scale_matrix = mat4_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
 	
 	// Loop through all mesh faces
 	int number_faces = array_length(mesh.faces);
@@ -113,8 +113,7 @@ void update(void) {
 		// Transform vertices
 		for (int j = 0; j < 3; j++) {
 			vector4d_t transformed_vertex = vector4d_form_vec3(face_vertices[j]);
-			transformed_vertex.z = matrix4_mul_vec4(scale_matrix, transformed_vertex);
-				
+			transformed_vertex = matrix4_mul_vec4(scale_matrix, transformed_vertex);
 			transformed_vertex.z += 5;
 			transformed_vertices[j] = transformed_vertex;
 		}
@@ -145,7 +144,7 @@ void update(void) {
 		}
 		//
 		for (int j = 0; j < 3; j++) {
-			vector2d_t projected_point = project(transformed_vertices[j]);
+			vector2d_t projected_point = vector3d_form_vec4(project(transformed_vertices[j]));
 			projected_point.x += (WIDTH / 2);
                         projected_point.y += (HEIGHT / 1.75);
 			projected_triangle.points[j] = projected_point;
