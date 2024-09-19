@@ -96,6 +96,7 @@ void update(void) {
 	mesh.rotation.y += 0.01;
 	mesh.rotation.z += 0.00;
 	mesh.scale.x += 0.002;
+	mesh.scale.y += 0.001;
 
 	matrix4_t scale_matrix = mat4_scale(mesh.scale.x, mesh.scale.y, mesh.scale.z);
 	
@@ -115,13 +116,13 @@ void update(void) {
 			vector4d_t transformed_vertex = vector4d_form_vec3(face_vertices[j]);
 			transformed_vertex = matrix4_mul_vec4(scale_matrix, transformed_vertex);
 			transformed_vertex.z += 5;
-			transformed_vertices[j] = transformed_vertex;
+			transformed_vertices[j] = vector3d_form_vec4(transformed_vertex);
 		}
 		//
 		if (cull_method == CULL_BACKFACE) {
-			vector3d_t vector_a = vector3d_form_vec4(transformed_vertices[0]);
-			vector3d_t vector_b = vector3d_form_vec4(transformed_vertices[1]);
-			vector3d_t vector_c = vector3d_form_vec4(transformed_vertices[2]);
+			vector3d_t vector_a = transformed_vertices[0];
+			vector3d_t vector_b = transformed_vertices[1];
+			vector3d_t vector_c = transformed_vertices[2];
 
 			vector3d_t vector_ab = vector3d_sub(vector_b, vector_a);
 			vector3d_t vector_ac = vector3d_sub(vector_c, vector_a);
@@ -144,7 +145,7 @@ void update(void) {
 		}
 		//
 		for (int j = 0; j < 3; j++) {
-			vector2d_t projected_point = vector3d_form_vec4(project(transformed_vertices[j]));
+			vector2d_t projected_point = project(transformed_vertices[j]);
 			projected_point.x += (WIDTH / 2);
                         projected_point.y += (HEIGHT / 1.75);
 			projected_triangle.points[j] = projected_point;
