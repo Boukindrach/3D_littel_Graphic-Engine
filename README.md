@@ -1,67 +1,36 @@
-3D Renderer Project
-Overview
-This project is a custom 3D renderer implemented in C using SDL2. It loads 3D models from OBJ files and renders them to the screen, demonstrating fundamental concepts of 3D computer graphics.
-Features
 
-OBJ file loading and rendering
-3D to 2D projection
-Multiple rendering modes:
+# Little 3d graphic engine
 
-Wireframe
-Filled triangles
-Filled triangles with wireframe overlay
+A lightweight 3D graphics engine designed to load and visualize OBJ files, providing a basic representation of 3D models similar to Blender. This engine allows users to render and explore the properties of 3D objects in real-time, offering a simple yet effective way to interact with OBJ geometry.
 
 
-Backface culling
-Basic camera system
-Real-time rotation of 3D models
+## Installation
 
-Prerequisites
-To build and run this project, you'll need:
+```bash
+  git clone https://github.com/Boukindrach/3D_littel_Graphic-Engine.git
+cd 3D_littel_Graphic-Engine
+```
+you will need to install SDL2 to run the program:
+```
+  sudo apt-get install libsdl2-dev
+```
+    
+## Usage
 
-A C compiler (e.g., GCC)
-SDL2 library
-Make (optional, for building)
+Running the engine: After successful compilation, you can run the engine with the following command:
 
-Building the Project
+```bash
+./3D_littel_Graphic-Engine/renderer
+```
 
-Clone the repository:
-Copy: git clone https://github.com/Boukindrach/3D_littel_Graphic-Engine.git
+if you have an obj file, upload it the assets folder and got the the main.c:
+line 51, you will see something like:
 
-cd 3d-renderer
+    ```load_obj_file_data("./assets/Building.obj");```
+replace the Building.obj with the name of you OBJ file.
+## Authors
 
-Build the project:
-Copymake
-If you don't have Make installed, you can compile manually:
-Copygcc -o renderer main.c display.c vector.c mesh.c array.c camera.c -lSDL2 -lm
+Rachid Boukind
+- [on Github](https://www.github.com/Boukindrach)
+- [on Linkedin](https://www.linkedin.com/in/rachid-boukind/)
 
-
-Running the Application
-After building, run the application:
-Copy./renderer
-Controls
-
-1: Switch to wireframe rendering mode by pressing 1
-2: Switch to filled triangle rendering mode by pressing 2
-3: Switch to filled triangle with wireframe overlay mode by pressing 3
-C: Enable backface culling by pressing c
-D: Disable backface culling by pressing d
-ESC: Exit the application
-
-Project Structure
-
-main.c: Main application logic
-display.h/c: Functions for display and rendering
-vector.h/c: Vector mathematics operations
-mesh.h/c: Mesh data structure and operations
-array.h/c: Dynamic array implementation
-camera.h/c: Camera system
-
-Future Improvements
-
-Texture mapping
-Lighting system
-More advanced camera controls
-Performance optimizations for larger meshes
-
-By Rachid Boukind
